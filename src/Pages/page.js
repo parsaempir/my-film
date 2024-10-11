@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import axios from 'axios';
-import Modal from 'react-modal';
 import './page.css';
-import Serch from './serch-mood.png';
-import imgs from './img film.webp'
+import Serch from '../assets/serch-mood.png';
+
 let MoviesPage = () => {
   let [movies, setMovies] = useState([]);
   let [searchMovieTerm, setSearchMovieTerm] = useState('');
   let [loading, setLoading] = useState(false);
   let [moviePage, setMoviePage] = useState(1);
   let [hasMoreMovies, setHasMoreMovies] = useState(true);
-  let [selectedItem, setSelectedItem] = useState(null);
-  let [isModalOpen, setIsModalOpen] = useState(false);
   let [genres, setGenres] = useState([]);
+  let navigate = useNavigate(); 
 
   useEffect(() => {
     fetchGenres();
@@ -89,18 +88,7 @@ let MoviesPage = () => {
     }
   };
 
-  let openModal = (item) => {
-    setSelectedItem(item);
-    setIsModalOpen(true);
-  };
-
-  let closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedItem(null);
-  };
-
-  return (<>
-
+  return (
     <div className="space-capsule">
       <div className="cosmic-zone">
         <div className="quantum-search">
@@ -124,7 +112,7 @@ let MoviesPage = () => {
           <p className="celestial-note">No movies found.</p>
         ) : (
           movies.map((movie, index) => (
-            <div key={index} className="star-card" onClick={() => openModal(movie)}>
+            <div key={index} className="star-card" onClick={() => navigate(`/movies/${movie.id}`)}>
               <img
                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                 alt={movie.title}
@@ -141,21 +129,7 @@ let MoviesPage = () => {
           </button>
         )}
       </div>
-
-      <Modal isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="Movie Details" className="nebula-window">
-        {selectedItem && (
-          <div className="nebula-core">
-            <button className="portal-close" onClick={closeModal}>&times;</button>
-            <h2>{selectedItem.title}</h2>
-            <p>Overview:{selectedItem.overview}</p>
-            <p><strong>Release Date:</strong> {selectedItem.release_date}</p>
-            {selectedItem.genre_ids && (
-              <p><strong>Genres:</strong> {selectedItem.genre_ids.map(id => genres.find(genre => genre.id === id)?.name).join(', ')}</p>
-            )}
-          </div>
-        )}
-      </Modal>
-    </div> </>
+    </div>
   );
 };
 

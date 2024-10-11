@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import './App.css';
+import { Link } from 'react-router-dom';
+import '../App.css';
 import MenuApp from './menu';
-import Serchi from './magnifying-glass-solid.svg'
-import logos from './moviesland_transparent-parsa.png'
+import Serchi from '../assets/magnifying-glass-solid.svg'
+import logos from '../assets/moviesland_transparent-parsa.png'
 let Navbar = () => {
- 
   let [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -28,7 +27,7 @@ let Navbar = () => {
         <Link to='/' className='linkof'>Home</Link>
         <Link to='page' className='linkof'>All Movies</Link>
 <Link to='Series page' className='linkof'>All Series</Link>
-<Link to='All M S' className='link-ser'><img src={Serchi} height='20px' className='serchig'></img></Link>
+<Link to='AllMovieSeries' className='link-ser'><img src={Serchi} height='20px' className='serchig'></img></Link>
 </span>
 
     </div>

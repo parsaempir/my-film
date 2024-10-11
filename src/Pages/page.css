@@ -75,11 +75,13 @@ background-color: rgba(0, 0, 0, 0.929);
   
   .galaxy-info {
     padding: 10px;
-  }
+}
   
   .galaxy-info h3 {
     margin: 0;
     font-size: 18px;
+
+    
   }
   
   .infinity-button {
@@ -164,16 +166,7 @@ color: red;
   }
   
 
-  .ReactModal__Overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 999;
- 
-  }
+
 h3{
   color: white;
 }

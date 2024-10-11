@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Modal from 'react-modal';
+import { useNavigate } from 'react-router-dom';
 import './page.css';
-import Serch from './serch-mood.png';
+import Serch from '../assets/serch-mood.png';
 
 let SeriesPage = () => {
   let [tvShows, setTvShows] = useState([]);
@@ -10,14 +10,14 @@ let SeriesPage = () => {
   let [loading, setLoading] = useState(false);
   let [tvPage, setTvPage] = useState(1);
   let [hasMoreTvShows, setHasMoreTvShows] = useState(true);
-  let [selectedItem, setSelectedItem] = useState(null);
-  let [isModalOpen, setIsModalOpen] = useState(false);
   let [genres, setGenres] = useState([]);
+  let navigate = useNavigate(); 
 
   useEffect(() => {
     fetchGenres();
     fetchTvShows(tvPage, searchTvTerm);
   }, [searchTvTerm, tvPage]);
+
 
   let fetchGenres = async () => {
     try {
@@ -69,10 +69,11 @@ let SeriesPage = () => {
     setSearchTvTerm(event.target.value);
   };
 
+ 
   let handleTvSearch = () => {
-    setTvShows([]);
-    setTvPage(1);
-    fetchTvShows(1, searchTvTerm);
+    setTvShows([]); 
+    setTvPage(1); 
+    fetchTvShows(1, searchTvTerm); 
     window.scrollTo(0, 0);
   };
 
@@ -89,14 +90,8 @@ let SeriesPage = () => {
     }
   };
 
-  let openModal = (item) => {
-    setSelectedItem(item);
-    setIsModalOpen(true);
-  };
-
-  let closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedItem(null);
+  let openDetailsPage = (item) => {
+    navigate('/series-details', { state: { show: item } });
   };
 
   return (
@@ -123,7 +118,7 @@ let SeriesPage = () => {
           <p className="celestial-note">No Serials found.</p>
         ) : (
           tvShows.map((show, index) => (
-            <div key={index} className="star-card" onClick={() => openModal(show)}>
+            <div key={index} className="star-card" onClick={() => openDetailsPage(show)}>
               <img
                 src={`https://image.tmdb.org/t/p/w500${show.poster_path}`}
                 alt={show.name}
@@ -140,20 +135,6 @@ let SeriesPage = () => {
           </button>
         )}
       </div>
-
-      <Modal isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="TV Show Details" className="nebula-window">
-        {selectedItem && (
-          <div className="nebula-core">
-            <button className="portal-close" onClick={closeModal}>&times;</button>
-            <h2>{selectedItem.name}</h2>
-            <p>{selectedItem.overview}</p>
-            <p><strong>First Air Date:</strong> {selectedItem.first_air_date}</p>
-            {selectedItem.genre_ids && (
-              <p><strong>Genres:</strong> {selectedItem.genre_ids.map(id => genres.find(genre => genre.id === id)?.name).join(', ')}</p>
-            )}
-          </div>
-        )}
-      </Modal>
     </div>
   );
 };

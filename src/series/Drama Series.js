@@ -1,5 +1,7 @@
+
 import React, { useEffect, useState, useRef } from 'react';
 import './Romance Series.css';
+import { useNavigate } from 'react-router-dom';  
 
 let genreMap = {
   28: "Action",
@@ -25,15 +27,14 @@ let genreMap = {
 
 let AppSun = () => {
   let [series, setSeries] = useState([]);
-  let [selectedSeries, setSelectedSeries] = useState(null);
   let [loading, setLoading] = useState(true); 
   let [error, setError] = useState(null); 
   let seriesWrapperRef = useRef(null);
+  let navigate = useNavigate(); 
 
   let fetchDramaSeries = async () => {
     let apiKey = 'e8847ea985283735785e736b20c0ac34'; 
     try {
-      console.log('Fetching drama series...');
       let response = await fetch(`https://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&with_genres=18&language=en-US&page=1`);
 
       if (!response.ok) {
@@ -41,16 +42,12 @@ let AppSun = () => {
       }
 
       let data = await response.json();
-      console.log('Data received:', data);
-
       if (data.results && data.results.length > 0) {
         setSeries(data.results); 
       } else {
-        console.log('No drama series found.');
         setSeries([]); 
       }
     } catch (error) {
-      console.error('Error fetching drama series:', error);
       setError('Failed to load drama series.');
     } finally {
       setLoading(false); 
@@ -61,14 +58,6 @@ let AppSun = () => {
     fetchDramaSeries();
   }, []);
 
-  let handleClick = (serie) => {
-    setSelectedSeries(serie);
-  };
-
-  let closeModal = () => {
-    setSelectedSeries(null);
-  };
-
   let scroll = (direction) => {
     if (seriesWrapperRef.current) {
       let scrollAmount = 300; 
@@ -77,6 +66,10 @@ let AppSun = () => {
         behavior: 'smooth'
       });
     }
+  };
+
+  let handleCardClick = (serie) => {
+    navigate(`/series/${serie.id}`, { state: { serie } }); 
   };
 
   return (
@@ -91,7 +84,7 @@ let AppSun = () => {
             {!loading && !error && series.length > 0 && (
               <ul className="series-list">
                 {series.map((serie) => (
-                  <li key={serie.id} onClick={() => handleClick(serie)}>
+                  <li key={serie.id} onClick={() => handleCardClick(serie)}>
                     <img 
                       src={`https://image.tmdb.org/t/p/w200${serie.poster_path}`} 
                       alt={serie.name} 
@@ -105,18 +98,6 @@ let AppSun = () => {
           </div>
           <button className="scroll-button right" onClick={() => scroll('right')}>&gt;</button>
         </div>
-
-        {selectedSeries && (
-          <div className="modal">
-            <div className="modal-content">
-              <span className="close" onClick={closeModal}>&times;</span>
-              <h2>{selectedSeries.name}</h2>
-              <p><strong>Release Date:</strong> {selectedSeries.first_air_date}</p>
-              <p><strong>Genres:</strong> {selectedSeries.genre_ids.map(id => genreMap[id] || 'Unknown').join(', ')}</p>
-              <p>{selectedSeries.overview}</p>
-            </div>
-          </div>
-        )}
       </div>
     </>
   );

@@ -1,13 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Navbar from './Navbar';
-import MovieList from './action';
+import MovieList from '../movies/action';
 import LatestMovies from './new movis'
-import DramaMovies from './deram'
-import Appfun from './Romance Series'
-import AppSun from './Drama Series'
+import DramaMovies from '../movies/deram'
+import Appfun from '../series/Romance Series'
+import AppSun from '../series/Drama Series'
 import Top from './top nav';
-function Homeee() {
+function Home() {
   return (
   <>
            <div className="App">
@@ -22,7 +21,7 @@ function Homeee() {
 </div>
     </div> 
        <div className='bot-top'>
-      <Link to='/All M S'><button className='btntop'>View More</button></Link>
+      <Link to='/AllMovieSeries'><button className='btntop'>View More</button></Link>
     </div>
 
     <Top />
@@ -30,4 +29,4 @@ function Homeee() {
   );
 }
 
-export default Homeee;
+export default Home;

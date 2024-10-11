@@ -1,7 +1,7 @@
+// DramaMovies.js
 import React, { useEffect, useState, useRef } from 'react';
-import './App.css';
-
-
+import '../App.css';
+import { useNavigate } from 'react-router-dom'; // برای مسیریابی
 
 let MovieCard = ({ movie, onClick }) => {
     let posterUrl = movie.poster_path
@@ -16,34 +16,12 @@ let MovieCard = ({ movie, onClick }) => {
     );
 };
 
-let genreMap = {
-    28: "Action",
-    12: "Adventure",
-    16: "Animation",
-    35: "Comedy",
-    80: "Crime",
-    99: "Documentary",
-    18: "Drama", 
-    10751: "Family",
-    14: "Fantasy",
-    36: "History",
-    27: "Horror",
-    10402: "Music",
-    9648: "Mystery",
-    10749: "Romance",
-    878: "Science Fiction",
-    10770: "TV Movie",
-    53: "Thriller",
-    10752: "War",
-    37: "Western"
-};
-
 let DramaMovies = () => {
     let [movies, setMovies] = useState([]);
     let [loading, setLoading] = useState(true);
-    let [selectedMovie, setSelectedMovie] = useState(null);
 
     let movieListRef = useRef(null);
+    let navigate = useNavigate(); // برای هدایت به صفحه جزئیات
 
     useEffect(() => {
         let fetchMovies = async () => {
@@ -70,11 +48,7 @@ let DramaMovies = () => {
     }, []);
 
     let handleCardClick = (movie) => {
-        setSelectedMovie(movie);
-    };
-
-    let closeModal = () => {
-        setSelectedMovie(null);
+        navigate(`/movie/${movie.id}`, { state: { movie } }); // هدایت به صفحه جزئیات
     };
 
     let scrollLeft = () => {
@@ -104,18 +78,6 @@ let DramaMovies = () => {
                     ))}
                 </div>
                 <button className="scroll-button right" onClick={scrollRight}>&gt;</button>
-
-                {selectedMovie && (
-                    <div className="modal">
-                        <div className="modal-content">
-                            <span className="close" onClick={closeModal}>&times;</span>
-                            <h2>{selectedMovie.title}</h2>
-                            <p><strong>Release Date:</strong> {selectedMovie.release_date}</p>
-                            <p><strong>Overview:</strong> {selectedMovie.overview}</p>
-                            <p><strong>Genres:</strong> {genreMap[selectedMovie.genre_ids[0]]}</p>
-                        </div>
-                    </div>
-                )}
             </div>
         </>
     );

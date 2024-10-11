@@ -1,8 +1,8 @@
 import React from "react";
-import './App.css';
-import Ins from './instagram-brands-solid-parsaa.svg'
-import Tel from './telegram-brands-solid-parsa.svg'
-import logosf from './moviesland_transparent-parsa.png'
+import '../App.css';
+import Ins from '../assets/instagram-brands-solid-parsaa.svg'
+import Tel from '../assets/telegram-brands-solid-parsa.svg'
+import logosf from '../assets/moviesland_transparent-parsa.png'
 function TopNav(){
 return(<>
 

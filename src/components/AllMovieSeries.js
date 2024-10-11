@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Modal from 'react-modal';
-import './page.css';
-import Serch from './serch-mood.png';
+import { useNavigate } from 'react-router-dom';
+import '../Pages/page.css';
+import Serch from '../assets/serch-mood.png';
 
-let TheSecondPage = () => {
-  let [results, setResults] = useState([]); 
+let TheAllMovieSeriesPage = () => {
+  let [results, setResults] = useState([]);
   let [searchTerm, setSearchTerm] = useState('');
   let [loading, setLoading] = useState(false);
   let [page, setPage] = useState(1);
   let [hasMore, setHasMore] = useState(true);
-  let [selectedItem, setSelectedItem] = useState(null);
-  let [isModalOpen, setIsModalOpen] = useState(false);
   let [genres, setGenres] = useState([]);
+  let navigate = useNavigate(); 
 
   useEffect(() => {
     fetchGenres();
   }, []);
+
 
   let fetchGenres = async () => {
     try {
@@ -77,10 +77,10 @@ let TheSecondPage = () => {
   };
 
   let handleSearch = () => {
-    setResults([]);
-    setPage(1);
-    fetchMoviesAndTvShows(1, searchTerm);
-    window.scrollTo(0, 0);
+    setResults([]); 
+    setPage(1); 
+    fetchMoviesAndTvShows(1, searchTerm); 
+    window.scrollTo(0, 0); 
   };
 
   let handleKeyPress = (event) => {
@@ -96,14 +96,8 @@ let TheSecondPage = () => {
     }
   };
 
-  let openModal = (item) => {
-    setSelectedItem(item);
-    setIsModalOpen(true);
-  };
-
-  let closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedItem(null);
+  let openDetailsPage = (item) => {
+    navigate('/details', { state: { item } }); 
   };
 
   return (
@@ -132,7 +126,7 @@ let TheSecondPage = () => {
               <p className="celestial-note">No results found.</p>
             ) : (
               results.map((item, index) => (
-                <div key={index} className="star-card" onClick={() => openModal(item)}>
+                <div key={index} className="star-card" onClick={() => openDetailsPage(item)}>
                   <img
                     src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
                     alt={item.title || item.name}
@@ -151,22 +145,8 @@ let TheSecondPage = () => {
           </>
         )}
       </div>
-
-      <Modal isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="Item Details" className="nebula-window">
-        {selectedItem && (
-          <div className="nebula-core">
-            <button className="portal-close" onClick={closeModal}>&times;</button>
-            <h2>{selectedItem.title || selectedItem.name}</h2>
-            <p>Overview:{selectedItem.overview}</p>
-            <p><strong>Release Date:</strong> {selectedItem.release_date || selectedItem.first_air_date}</p>
-            {selectedItem.genre_ids && (
-              <p><strong>Genres:</strong> {selectedItem.genre_ids.map(id => genres.find(genre => genre.id === id)?.name).join(', ')}</p>
-            )}
-          </div>
-        )}
-      </Modal>
     </div>
   );
 };
 
-export default TheSecondPage;
+export default TheAllMovieSeriesPage;

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import './menu.css';
-import logoof from './bars.svg'
+import logoof from '../assets/bars.svg'
 import { Link } from 'react-router-dom';
-import Serchi from './magnifying-glass-solid.svg'
+import Serchi from '../assets/magnifying-glass-solid.svg'
 Modal.setAppElement('#root');
 
 function MenuApp() {
