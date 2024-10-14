@@ -10,30 +10,16 @@ let MoviesPage = () => {
   let [loading, setLoading] = useState(false);
   let [moviePage, setMoviePage] = useState(1);
   let [hasMoreMovies, setHasMoreMovies] = useState(true);
-  let [genres, setGenres] = useState([]);
+  let [error, setError] = useState(null); 
   let navigate = useNavigate(); 
 
   useEffect(() => {
-    fetchGenres();
     fetchMovies(moviePage, searchMovieTerm);
   }, [searchMovieTerm, moviePage]);
 
-  let fetchGenres = async () => {
-    try {
-      let movieGenresResponse = await axios.get('https://api.themoviedb.org/3/genre/movie/list', {
-        params: {
-          api_key: 'e8847ea985283735785e736b20c0ac34',
-          language: 'en-US',
-        },
-      });
-      setGenres(movieGenresResponse.data.genres);
-    } catch (error) {
-      console.error('Error fetching genres', error);
-    }
-  };
-
   let fetchMovies = async (page, query) => {
     setLoading(true);
+    setError(null); 
     try {
       let response;
       if (query) {
@@ -55,10 +41,10 @@ let MoviesPage = () => {
           },
         });
       }
-      setMovies(prevMovies => [...prevMovies, ...response.data.results]);
+      setMovies(prevMovies => (page === 1 ? response.data.results : [...prevMovies, ...response.data.results])); 
       setHasMoreMovies(response.data.page < response.data.total_pages);
     } catch (error) {
-      console.error('Error fetching movies', error);
+      setError('Error fetching movies. Please try again later.'); 
     } finally {
       setLoading(false);
     }
@@ -69,8 +55,8 @@ let MoviesPage = () => {
   };
 
   let handleMovieSearch = () => {
-    setMovies([]);
-    setMoviePage(1);
+    setMovies([]); 
+    setMoviePage(1); 
     fetchMovies(1, searchMovieTerm);
     window.scrollTo(0, 0);
   };
@@ -106,22 +92,26 @@ let MoviesPage = () => {
         </div>
 
         <h2>Movies</h2>
-        {loading && !movies.length ? (
-          <p className="celestial-note">Loading movies...</p>
-        ) : movies.length === 0 ? (
-          <p className="celestial-note">No movies found.</p>
-        ) : (
-          movies.map((movie, index) => (
-            <div key={index} className="star-card" onClick={() => navigate(`/movies/${movie.id}`)}>
-              <img
-                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                alt={movie.title}
-              />
-              <div className="galaxy-info">
-                <h3>{movie.title}</h3>
+        {loading && <p className="celestial-note">Loading movies...</p>}  {}
+        {error && <p className="celestial-note">{error}</p>}  {}
+        {!loading && !error && movies.length === 0 && (
+          <p className="celestial-note">No movies found.</p>  
+        )}
+
+        {movies.length > 0 && !loading && !error && (
+          <div className="movies-grid">
+            {movies.map((movie, index) => (
+              <div key={index} className="star-card" onClick={() => navigate(`/movies/${movie.id}`)}>
+                <img
+                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                  alt={movie.title}
+                />
+                <div className="galaxy-info">
+                  <h3>{movie.title}</h3>
+                </div>
               </div>
-            </div>
-          ))
+            ))}
+          </div>
         )}
         {hasMoreMovies && !loading && (
           <button onClick={loadMoreMovies} className="infinity-button">

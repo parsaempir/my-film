@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import MovieList from '../movies/action';
-import LatestMovies from './new movis'
+import LatestMovies from './newmovis'
 import DramaMovies from '../movies/deram'
 import Appfun from '../series/Romance Series'
 import AppSun from '../series/Drama Series'

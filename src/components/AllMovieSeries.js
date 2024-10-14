@@ -10,13 +10,13 @@ let TheAllMovieSeriesPage = () => {
   let [loading, setLoading] = useState(false);
   let [page, setPage] = useState(1);
   let [hasMore, setHasMore] = useState(true);
+  let [error, setError] = useState(null); 
   let [genres, setGenres] = useState([]);
-  let navigate = useNavigate(); 
+  let navigate = useNavigate();
 
   useEffect(() => {
     fetchGenres();
   }, []);
-
 
   let fetchGenres = async () => {
     try {
@@ -42,6 +42,7 @@ let TheAllMovieSeriesPage = () => {
 
   let fetchMoviesAndTvShows = async (page, query) => {
     setLoading(true);
+    setError(null); 
     try {
       let movieResponse = await axios.get('https://api.themoviedb.org/3/search/movie', {
         params: {
@@ -63,10 +64,14 @@ let TheAllMovieSeriesPage = () => {
 
       let combinedResults = [...movieResponse.data.results, ...tvResponse.data.results];
 
-      setResults(prevResults => [...prevResults, ...combinedResults]);
-      setHasMore(movieResponse.data.page < movieResponse.data.total_pages || tvResponse.data.page < tvResponse.data.total_pages);
+      if (combinedResults.length === 0) {
+        setError('No results found for your search.'); 
+      } else {
+        setResults(prevResults => [...prevResults, ...combinedResults]);
+        setHasMore(movieResponse.data.page < movieResponse.data.total_pages || tvResponse.data.page < tvResponse.data.total_pages);
+      }
     } catch (error) {
-      console.error('Error fetching movies and TV shows', error);
+      setError('Error fetching data. Please try again later.');   
     } finally {
       setLoading(false);
     }
@@ -117,27 +122,24 @@ let TheAllMovieSeriesPage = () => {
           </button>
         </div>
 
-        {results.length > 0 && (
+        {loading && <p className="celestial-note">Loading...</p>}  { }
+        {error && <p className="celestial-note">{error}</p>}  { }
+
+        {results.length > 0 && !loading && !error && (
           <>
             <h2>Results</h2>
-            {loading && !results.length ? (
-              <p className="celestial-note">Loading...</p>
-            ) : results.length === 0 ? (
-              <p className="celestial-note">No results found.</p>
-            ) : (
-              results.map((item, index) => (
-                <div key={index} className="star-card" onClick={() => openDetailsPage(item)}>
-                  <img
-                    src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
-                    alt={item.title || item.name}
-                  />
-                  <div className="galaxy-info">
-                    <h3>{item.title || item.name}</h3>
-                  </div>
+            {results.map((item, index) => (
+              <div key={index} className="star-card" onClick={() => openDetailsPage(item)}>
+                <img
+                  src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+                  alt={item.title || item.name}
+                />
+                <div className="galaxy-info">
+                  <h3>{item.title || item.name}</h3>
                 </div>
-              ))
-            )}
-            {hasMore && !loading && (
+              </div>
+            ))}
+            {hasMore && (
               <button onClick={loadMore} className="infinity-button">
                 Load More
               </button>

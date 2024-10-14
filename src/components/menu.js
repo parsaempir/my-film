@@ -45,9 +45,9 @@ function MenuApp() {
                 <button onClick={closeWiggleBox} className="wonky-close-button">×</button>
                 <div className='link-gap'>
                 <Link to='/' className='linkof'>Home</Link>
-                <Link to='page' className='linkof'>All Movies</Link>
-                <Link to='Series page' className='linkof'>All Series</Link>
-                <Link to='All M S'> <img src={Serchi} height='20px'></img></Link>
+                <Link to='Movies' className='linkof'>All Movies</Link>
+                <Link to='Series' className='linkof'>All Series</Link>
+                <Link to='AllMovieSeries'> <img src={Serchi} height='20px'></img></Link>
                 </div>
             </Modal>
         </div></>

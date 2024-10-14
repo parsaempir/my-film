@@ -22,11 +22,11 @@ let Navbar = () => {
       <div className='NavOnwer'>
    <div className='tv-navbar'>
  
-   <span><img src={logos} className='imgsf'></img></span>
+   <Link to='/'><span><img src={logos} className='imgsf'></img></span></Link>
    <span className='link-tekn'>
         <Link to='/' className='linkof'>Home</Link>
-        <Link to='page' className='linkof'>All Movies</Link>
-<Link to='Series page' className='linkof'>All Series</Link>
+        <Link to='Movies' className='linkof'>All Movies</Link>
+<Link to='Series' className='linkof'>All Series</Link>
 <Link to='AllMovieSeries' className='link-ser'><img src={Serchi} height='20px' className='serchig'></img></Link>
 </span>
 
