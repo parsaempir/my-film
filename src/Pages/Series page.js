@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { fetchTvShows } from '../api/apiseries';  
 import './page.css';
 import Serch from '../assets/serch-mood.png';
 
@@ -14,37 +14,18 @@ let SeriesPage = () => {
   let navigate = useNavigate(); 
 
   useEffect(() => {
-    fetchTvShows(tvPage, searchTvTerm);
+    handleFetchTvShows(tvPage, searchTvTerm);
   }, [searchTvTerm, tvPage]);
 
-  let fetchTvShows = async (page, query) => {
+  let handleFetchTvShows = async (page, query) => {
     setLoading(true);
     setError(null); 
     try {
-      let response;
-      if (query) {
-        response = await axios.get(`https://api.themoviedb.org/3/search/tv`, {
-          params: {
-            api_key: 'e8847ea985283735785e736b20c0ac34',
-            language: 'en-US',
-            query,
-            page,
-          },
-        });
-      } else {
-        response = await axios.get(`https://api.themoviedb.org/3/discover/tv`, {
-          params: {
-            api_key: 'e8847ea985283735785e736b20c0ac34',
-            language: 'en-US',
-            sort_by: 'popularity.desc',
-            page,
-          },
-        });
-      }
-      setTvShows(prevTvShows => (page === 1 ? response.data.results : [...prevTvShows, ...response.data.results])); 
-      setHasMoreTvShows(response.data.page < response.data.total_pages);
+      let data = await fetchTvShows(page, query);
+      setTvShows(prevTvShows => (page === 1 ? data.results : [...prevTvShows, ...data.results])); 
+      setHasMoreTvShows(data.page < data.total_pages);
     } catch (error) {
-      setError('Error fetching TV shows. Please try again later.'); 
+      setError(error.message); 
     } finally {
       setLoading(false);
     }
@@ -57,7 +38,7 @@ let SeriesPage = () => {
   let handleTvSearch = () => {
     setTvShows([]); 
     setTvPage(1); 
-    fetchTvShows(1, searchTvTerm);
+    handleFetchTvShows(1, searchTvTerm);
     window.scrollTo(0, 0);
   };
 
@@ -70,7 +51,7 @@ let SeriesPage = () => {
   let loadMoreTvShows = () => {
     if (hasMoreTvShows) {
       setTvPage(prevPage => prevPage + 1);
-      fetchTvShows(tvPage + 1, searchTvTerm);
+      handleFetchTvShows(tvPage + 1, searchTvTerm);
     }
   };
 
@@ -96,8 +77,8 @@ let SeriesPage = () => {
         </div>
 
         <h2>Serials</h2>
-        {loading && <p className="celestial-note">Loading Serials...</p>}  {}
-        {error && <p className="celestial-note">{error}</p>}  {}
+        {loading && <p className="celestial-note">Loading Serials...</p>}  
+        {error && <p className="celestial-note">{error}</p>}  
         {!loading && !error && tvShows.length === 0 && (
           <p className="celestial-note">No Serials found.</p>  
         )}

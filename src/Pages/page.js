@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; 
-import axios from 'axios';
 import './page.css';
 import Serch from '../assets/serch-mood.png';
+import { fetchMovies } from '../api/apimovie';  
 
 let MoviesPage = () => {
   let [movies, setMovies] = useState([]);
@@ -14,41 +14,21 @@ let MoviesPage = () => {
   let navigate = useNavigate(); 
 
   useEffect(() => {
-    fetchMovies(moviePage, searchMovieTerm);
-  }, [searchMovieTerm, moviePage]);
-
-  let fetchMovies = async (page, query) => {
-    setLoading(true);
-    setError(null); 
-    try {
-      let response;
-      if (query) {
-        response = await axios.get(`https://api.themoviedb.org/3/search/movie`, {
-          params: {
-            api_key: 'e8847ea985283735785e736b20c0ac34',
-            language: 'en-US',
-            query,
-            page,
-          },
-        });
-      } else {
-        response = await axios.get(`https://api.themoviedb.org/3/discover/movie`, {
-          params: {
-            api_key: 'e8847ea985283735785e736b20c0ac34',
-            language: 'en-US',
-            sort_by: 'popularity.desc',
-            page,
-          },
-        });
+    const loadMovies = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await fetchMovies(moviePage, searchMovieTerm);  
+        setMovies(prevMovies => (moviePage === 1 ? data.results : [...prevMovies, ...data.results]));
+        setHasMoreMovies(data.page < data.total_pages);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
       }
-      setMovies(prevMovies => (page === 1 ? response.data.results : [...prevMovies, ...response.data.results])); 
-      setHasMoreMovies(response.data.page < response.data.total_pages);
-    } catch (error) {
-      setError('Error fetching movies. Please try again later.'); 
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
+    loadMovies();
+  }, [searchMovieTerm, moviePage]);
 
   let handleMovieSearchChange = (event) => {
     setSearchMovieTerm(event.target.value);
@@ -57,7 +37,6 @@ let MoviesPage = () => {
   let handleMovieSearch = () => {
     setMovies([]); 
     setMoviePage(1); 
-    fetchMovies(1, searchMovieTerm);
     window.scrollTo(0, 0);
   };
 
@@ -70,7 +49,6 @@ let MoviesPage = () => {
   let loadMoreMovies = () => {
     if (hasMoreMovies) {
       setMoviePage(prevPage => prevPage + 1);
-      fetchMovies(moviePage + 1, searchMovieTerm);
     }
   };
 

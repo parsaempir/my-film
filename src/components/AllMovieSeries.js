@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { fetchGenres, fetchMoviesAndTvShows } from '../api/apiService';  
 import '../Pages/page.css';
 import Serch from '../assets/serch-mood.png';
 
@@ -15,77 +15,36 @@ let TheAllMovieSeriesPage = () => {
   let navigate = useNavigate();
 
   useEffect(() => {
-    fetchGenres();
+    let loadGenres = async () => {
+      try {
+        let fetchedGenres = await fetchGenres();
+        setGenres(fetchedGenres);
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+    loadGenres();
   }, []);
 
-  let fetchGenres = async () => {
-    try {
-      let movieGenresResponse = await axios.get('https://api.themoviedb.org/3/genre/movie/list', {
-        params: {
-          api_key: 'e8847ea985283735785e736b20c0ac34',
-          language: 'en-US',
-        },
-      });
-
-      let tvGenresResponse = await axios.get('https://api.themoviedb.org/3/genre/tv/list', {
-        params: {
-          api_key: 'e8847ea985283735785e736b20c0ac34',
-          language: 'en-US',
-        },
-      });
-
-      setGenres([...movieGenresResponse.data.genres, ...tvGenresResponse.data.genres]);
-    } catch (error) {
-      console.error('Error fetching genres', error);
-    }
-  };
-
-  let fetchMoviesAndTvShows = async (page, query) => {
+  let handleSearch = async () => {
+    setResults([]);
+    setPage(1);
     setLoading(true);
-    setError(null); 
+    setError(null);
     try {
-      let movieResponse = await axios.get('https://api.themoviedb.org/3/search/movie', {
-        params: {
-          api_key: 'e8847ea985283735785e736b20c0ac34',
-          language: 'en-US',
-          query,
-          page,
-        },
-      });
-
-      let tvResponse = await axios.get('https://api.themoviedb.org/3/search/tv', {
-        params: {
-          api_key: 'e8847ea985283735785e736b20c0ac34',
-          language: 'en-US',
-          query,
-          page,
-        },
-      });
-
-      let combinedResults = [...movieResponse.data.results, ...tvResponse.data.results];
+      let combinedResults = await fetchMoviesAndTvShows(1, searchTerm);
+      setResults(combinedResults);
+      setHasMore(combinedResults.length > 0);
 
       if (combinedResults.length === 0) {
-        setError('No results found for your search.'); 
-      } else {
-        setResults(prevResults => [...prevResults, ...combinedResults]);
-        setHasMore(movieResponse.data.page < movieResponse.data.total_pages || tvResponse.data.page < tvResponse.data.total_pages);
+        setError("No results found for your search.");
       }
+
     } catch (error) {
-      setError('Error fetching data. Please try again later.');   
+      setError(error.message);
     } finally {
       setLoading(false);
     }
-  };
-
-  let handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
-  };
-
-  let handleSearch = () => {
-    setResults([]); 
-    setPage(1); 
-    fetchMoviesAndTvShows(1, searchTerm); 
-    window.scrollTo(0, 0); 
   };
 
   let handleKeyPress = (event) => {
@@ -94,10 +53,16 @@ let TheAllMovieSeriesPage = () => {
     }
   };
 
-  let loadMore = () => {
+  let loadMore = async () => {
     if (hasMore) {
       setPage(prevPage => prevPage + 1);
-      fetchMoviesAndTvShows(page + 1, searchTerm);
+      try {
+        let newResults = await fetchMoviesAndTvShows(page + 1, searchTerm);
+        setResults(prevResults => [...prevResults, ...newResults]);
+        setHasMore(newResults.length > 0);
+      } catch (error) {
+        setError(error.message);
+      }
     }
   };
 
@@ -114,7 +79,7 @@ let TheAllMovieSeriesPage = () => {
             type="text"
             placeholder="Search for a movie or serial..."
             value={searchTerm}
-            onChange={handleSearchChange}
+            onChange={(e) => setSearchTerm(e.target.value)}
             onKeyPress={handleKeyPress}
           />
           <button onClick={handleSearch} className="search-button">
@@ -122,8 +87,12 @@ let TheAllMovieSeriesPage = () => {
           </button>
         </div>
 
-        {loading && <p className="celestial-note">Loading...</p>}  { }
-        {error && <p className="celestial-note">{error}</p>}  { }
+        {loading && <p className="celestial-note">Loading...</p>}
+        {error && <p className="celestial-note">{error}</p>}  {}
+
+        {!loading && !error && results.length === 0 && (
+          <p className="celestial-note"></p>  
+        )}
 
         {results.length > 0 && !loading && !error && (
           <>
@@ -139,11 +108,7 @@ let TheAllMovieSeriesPage = () => {
                 </div>
               </div>
             ))}
-            {hasMore && (
-              <button onClick={loadMore} className="infinity-button">
-                Load More
-              </button>
-            )}
+       
           </>
         )}
       </div>

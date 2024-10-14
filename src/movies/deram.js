@@ -1,7 +1,6 @@
-// DramaMovies.js
 import React, { useEffect, useState, useRef } from 'react';
 import '../App.css';
-import { useNavigate } from 'react-router-dom'; // برای مسیریابی
+import { useNavigate } from 'react-router-dom'; 
 
 let MovieCard = ({ movie, onClick }) => {
     let posterUrl = movie.poster_path
@@ -21,7 +20,7 @@ let DramaMovies = () => {
     let [loading, setLoading] = useState(true);
 
     let movieListRef = useRef(null);
-    let navigate = useNavigate(); // برای هدایت به صفحه جزئیات
+    let navigate = useNavigate(); 
 
     useEffect(() => {
         let fetchMovies = async () => {
@@ -48,7 +47,7 @@ let DramaMovies = () => {
     }, []);
 
     let handleCardClick = (movie) => {
-        navigate(`/movie/${movie.id}`, { state: { movie } }); // هدایت به صفحه جزئیات
+        navigate(`/movie/${movie.id}`, { state: { movie } }); 
     };
 
     let scrollLeft = () => {
