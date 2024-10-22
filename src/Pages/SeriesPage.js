@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchTvShows } from '../api/Series';  
-import './page.css';
+import './MoviesPage.css';
 import Serch from '../assets/serch-mood.png';
 
 let SeriesPage = () => {

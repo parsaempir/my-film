@@ -3,8 +3,8 @@ import './App.css';
 import { BrowserRouter as Router,Routes, Route} from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './components/HomePage'
-import TheSecondPage from './Pages/page';
-import Series from './Pages/Series page';
+import TheSecondPage from './Pages/MoviesPage';
+import Series from './Pages/SeriesPage';
 import AllMovieSeriesPage from './components/AllMovieSeries';
 import MovieDetail from './movies/MovieDetail';
 import SeriesDetail from './series/SeriesDetail';

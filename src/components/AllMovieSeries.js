@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchMoviesAndTvShows } from '../api/Service';  
-import '../Pages/page.css';
+import '../Pages/MoviesPage.css';
 import Serch from '../assets/serch-mood.png';
 
 let TheAllMovieSeriesPage = () => {

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import MovieList from '../movies/action';
-import LatestMovies from './newmovis'
-import DramaMovies from '../movies/deram'
-import Appfun from '../series/Romance Series'
-import AppSun from '../series/Drama Series'
-import Top from './top nav';
+import MovieList from '../movies/Action';
+import LatestMovies from './NewMovies'
+import DramaMovies from '../movies/Deram'
+import Appfun from '../series/RomanceSeries'
+import AppSun from '../series/DramaSeries'
+import Top from './TopNav';
 function Home() {
   return (
   <>

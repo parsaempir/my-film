@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; 
-import './page.css';
+import './MoviesPage.css';
 import Serch from '../assets/serch-mood.png';
 import { fetchMovies } from '../api/Moviess';  
 

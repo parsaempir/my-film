@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
-import './menu.css';
+import './Menu.css';
 import logoof from '../assets/bars.svg'
 import { Link } from 'react-router-dom';
 import Serchi from '../assets/magnifying-glass-solid.svg'

@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState, useRef } from 'react';
-import './Romance Series.css';
-import { useNavigate } from 'react-router-dom';  
+import './RomanceSeries.css';
+import { useNavigate } from 'react-router-dom'; 
 
 let genreMap = {
   28: "Action",
@@ -25,38 +25,38 @@ let genreMap = {
   37: "Western"
 };
 
-let AppSun = () => {
+let RomanceSeries = () => {
   let [series, setSeries] = useState([]);
   let [loading, setLoading] = useState(true); 
-  let [error, setError] = useState(null); 
   let seriesWrapperRef = useRef(null);
   let navigate = useNavigate(); 
 
-  let fetchDramaSeries = async () => {
+  let fetchRomanceSeries = async () => {
     let apiKey = 'e8847ea985283735785e736b20c0ac34'; 
     try {
-      let response = await fetch(`https://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&with_genres=18&language=en-US&page=1`);
+      console.log('Fetching romance series...');
+      let response = await fetch(`https://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&with_genres=10749&language=en-US&page=1`);
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
       let data = await response.json();
-      if (data.results && data.results.length > 0) {
-        setSeries(data.results); 
-      } else {
-        setSeries([]); 
-      }
+      setSeries(data.results); 
     } catch (error) {
-      setError('Failed to load drama series.');
+      console.error('Error fetching romance series:', error);
     } finally {
       setLoading(false); 
     }
   };
 
   useEffect(() => {
-    fetchDramaSeries();
+    fetchRomanceSeries();
   }, []);
+
+  let handleCardClick = (serie) => {
+    navigate(`/series/${serie.id}`, { state: { serie } }); 
+  };
 
   let scroll = (direction) => {
     if (seriesWrapperRef.current) {
@@ -68,20 +68,15 @@ let AppSun = () => {
     }
   };
 
-  let handleCardClick = (serie) => {
-    navigate(`/series/${serie.id}`, { state: { serie } }); 
-  };
-
   return (
     <>
-      <h2 className='fonts1'>Drama Series</h2>
+      <h2 className='fonts1'>Romance Series</h2>
       <div className="container">
         <div className="scroll-container">
           <button className="scroll-button left" onClick={() => scroll('left')}>&lt;</button>
           <div className="series-wrapper" ref={seriesWrapperRef}>
             {loading && <p>Loading series...</p>}
-            {error && <p>{error}</p>}
-            {!loading && !error && series.length > 0 && (
+            {!loading && series.length > 0 && (
               <ul className="series-list">
                 {series.map((serie) => (
                   <li key={serie.id} onClick={() => handleCardClick(serie)}>
@@ -103,4 +98,4 @@ let AppSun = () => {
   );
 };
 
-export default AppSun;
+export default RomanceSeries;
