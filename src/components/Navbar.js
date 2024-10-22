@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../App.css';
-import MenuApp from './Menu';
+import MenuApp from './SmallMenu';
 import Serchi from '../assets/magnifying-glass-solid.svg'
 import logos from '../assets/moviesland_transparent-parsa.png'
 let Navbar = () => {
