@@ -21,7 +21,7 @@ function Home() {
 </div>
     </div> 
        <div className='bot-top'>
-      <Link to='/AllMovieSeries'><button className='btntop'>View More</button></Link>
+      <Link to='/allmovieseries'><button className='btntop'>View More</button></Link>
     </div>
 
     <Top />

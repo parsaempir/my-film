@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchGenres, fetchMoviesAndTvShows } from '../api/apiService';  
+import { fetchMoviesAndTvShows } from '../api/Service';  
 import '../Pages/page.css';
 import Serch from '../assets/serch-mood.png';
 
@@ -10,21 +10,8 @@ let TheAllMovieSeriesPage = () => {
   let [loading, setLoading] = useState(false);
   let [page, setPage] = useState(1);
   let [hasMore, setHasMore] = useState(true);
-  let [error, setError] = useState(null); 
-  let [genres, setGenres] = useState([]);
+  let [error, setError] = useState(null);
   let navigate = useNavigate();
-
-  useEffect(() => {
-    let loadGenres = async () => {
-      try {
-        let fetchedGenres = await fetchGenres();
-        setGenres(fetchedGenres);
-      } catch (error) {
-        console.error(error.message);
-      }
-    };
-    loadGenres();
-  }, []);
 
   let handleSearch = async () => {
     setResults([]);
@@ -39,7 +26,6 @@ let TheAllMovieSeriesPage = () => {
       if (combinedResults.length === 0) {
         setError("No results found for your search.");
       }
-
     } catch (error) {
       setError(error.message);
     } finally {
@@ -88,10 +74,10 @@ let TheAllMovieSeriesPage = () => {
         </div>
 
         {loading && <p className="celestial-note">Loading...</p>}
-        {error && <p className="celestial-note">{error}</p>}  {}
+        {error && <p className="celestial-note">{error}</p>}
 
         {!loading && !error && results.length === 0 && (
-          <p className="celestial-note"></p>  
+          <p className="celestial-note"></p>
         )}
 
         {results.length > 0 && !loading && !error && (
@@ -108,7 +94,6 @@ let TheAllMovieSeriesPage = () => {
                 </div>
               </div>
             ))}
-       
           </>
         )}
       </div>

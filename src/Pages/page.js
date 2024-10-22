@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import './page.css';
 import Serch from '../assets/serch-mood.png';
-import { fetchMovies } from '../api/apimovie';  
+import { fetchMovies } from '../api/Moviess';  
 
 let MoviesPage = () => {
   let [movies, setMovies] = useState([]);

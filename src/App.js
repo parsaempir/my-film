@@ -20,9 +20,9 @@ function App() {
       <Routes>
       
         <Route path="/" element={<Home/>}/>
-        <Route path="/Movies" element={<TheSecondPage/>}/>
-        <Route path="/Series" element={<Series/>}/>
-        <Route path="/AllMovieSeries" element={<AllMovieSeriesPage/>}/>
+        <Route path="/movies" element={<TheSecondPage/>}/>
+        <Route path="/series" element={<Series/>}/>
+        <Route path="/allmovieseries" element={<AllMovieSeriesPage/>}/>
         <Route path="/movie/:id" element={<MovieDetail/>} />
         <Route path="/series/:id" element={<SeriesDetail/>} />
         <Route path="/movies/:id" element={<MovieDetailsPage/>} />

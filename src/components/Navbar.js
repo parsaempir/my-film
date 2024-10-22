@@ -25,9 +25,9 @@ let Navbar = () => {
    <Link to='/'><span><img src={logos} className='imgsf'></img></span></Link>
    <span className='link-tekn'>
         <Link to='/' className='linkof'>Home</Link>
-        <Link to='Movies' className='linkof'>All Movies</Link>
-<Link to='Series' className='linkof'>All Series</Link>
-<Link to='AllMovieSeries' className='link-ser'><img src={Serchi} height='20px' className='serchig'></img></Link>
+        <Link to='movies' className='linkof'>All Movies</Link>
+<Link to='series' className='linkof'>All Series</Link>
+<Link to='allmovieseries' className='link-ser'><img src={Serchi} height='20px' className='serchig'></img></Link>
 </span>
 
     </div>

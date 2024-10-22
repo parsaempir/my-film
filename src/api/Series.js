@@ -1,25 +1,23 @@
 import axios from 'axios';
-
-let apiKey = 'e8847ea985283735785e736b20c0ac34';
-let apiBaseUrl = 'https://api.themoviedb.org/3';
+import { API_KEY, BASE_URL, DEFAULT_LANGUAGE } from '../constants/api'; 
 
 export let fetchTvShows = async (page, query) => {
   try {
     let response;
     if (query) {
-      response = await axios.get(`${apiBaseUrl}/search/tv`, {
+      response = await axios.get(`${BASE_URL}/search/tv`, {
         params: {
-          api_key: apiKey,
-          language: 'en-US',
+          api_key: API_KEY,
+          language: DEFAULT_LANGUAGE,
           query,
           page,
         },
       });
     } else {
-      response = await axios.get(`${apiBaseUrl}/discover/tv`, {
+      response = await axios.get(`${BASE_URL}/discover/tv`, {
         params: {
-          api_key: apiKey,
-          language: 'en-US',
+          api_key: API_KEY,
+          language: DEFAULT_LANGUAGE,
           sort_by: 'popularity.desc',
           page,
         },
