@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
-import './NewMovies.css';
+import './TheNewestMovies.css';
 
 let LatestMovies = () => {
     let [movies, setMovies] = useState([]);

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import MovieList from '../movies/Action';
-import LatestMovies from './NewMovies'
-import DramaMovies from '../movies/Deram'
+import MovieList from '../movies/ActionMovies';
+import LatestMovies from './TheNewestMovies'
+import DramaMovies from '../movies/DeramMovies'
 import Appfun from '../series/RomanceSeries'
 import AppSun from '../series/DramaSeries'
 import Top from './TopNav';
