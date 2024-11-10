@@ -1,17 +1,21 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
-
+import Color from '../components/ColorCircles'
 let MovieCard = ({ movie, onClick }) => {
+    
     let posterUrl = movie.poster_path
         ? `https://image.tmdb.org/t/p/w200${movie.poster_path}`
         : 'https://via.placeholder.com/200x300?text=No+Image';
 
-    return (
+    return (<>
+
         <div className="movie-card" onClick={() => onClick(movie)}>
-            <img src={posterUrl} alt={movie.title} />
-            <h3 className='titel-await'>{movie.title}</h3>
+      <img src={posterUrl} alt={movie.title} />
+      <div className='head-text'> {movie.title}</div>
+
         </div>
+        </>
     );
 };
 
@@ -96,16 +100,18 @@ let MovieList = () => {
 
     return (
         <>
-            <h2 className='fonts'>Action Movies</h2>
+            <span className='font'>Action Movies</span>
             <div className="movie-list-container">
                 <button className="scroll-button left" onClick={scrollLeft}>&lt;</button>
                 <div className="movie-list" ref={movieListRef}>
                     {movies.map(movie => (
                         <MovieCard key={movie.id} movie={movie} onClick={handleCardClick} />
                     ))}
-                </div>
-                <button className="scroll-button right" onClick={scrollRight}>&gt;</button>
+                </div>  
+                <span className='button-scroll'>
+                <button className="scroll-button right" onClick={scrollRight}>&gt;</button></span>
             </div>
+            <Color/>
         </>
     );
 };

@@ -6,12 +6,12 @@ import DramaMovies from '../movies/DeramMovies'
 import Appfun from '../series/RomanceSeries'
 import AppSun from '../series/DramaSeries'
 import Top from './TopNav';
+import Color from './ColorCircles'
 function Home() {
   return (
   <>
            <div className="App">
-   
-<h1 className='line'>Movies</h1>
+   <Color/>
 <LatestMovies />
 <div className='head-sun'>
 <MovieList /> 

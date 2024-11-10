@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './MoviesPage.css';
 import Serch from '../assets/serch-mood.png';
 import { fetchMovies } from '../api/Moviess';  
-
+import '../App.css'
 let MoviesPage = () => {
   let [movies, setMovies] = useState([]);
   let [searchMovieTerm, setSearchMovieTerm] = useState('');
@@ -56,7 +56,7 @@ let MoviesPage = () => {
     <div className="space-capsule">
       <div className="cosmic-zone">
         <div className="quantum-search">
-          <h2>Search Movies</h2>
+          <span className='font'>Search Movies</span>
           <input
             type="text"
             placeholder="Search for a movie..."
@@ -69,7 +69,7 @@ let MoviesPage = () => {
           </button>
         </div>
 
-        <h2>Movies</h2>
+        <span className='font'>Movies</span>
         {loading && <p className="celestial-note">Loading movies...</p>}  {}
         {error && <p className="celestial-note">{error}</p>}  {}
         {!loading && !error && movies.length === 0 && (
@@ -84,9 +84,9 @@ let MoviesPage = () => {
                   src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                   alt={movie.title}
                 />
-                <div className="galaxy-info">
-                  <h3>{movie.title}</h3>
-                </div>
+              
+                  <div className='head-text' id='text-title'>{movie.title}</div>
+               
               </div>
             ))}
           </div>

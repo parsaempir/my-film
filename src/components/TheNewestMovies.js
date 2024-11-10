@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import './TheNewestMovies.css';
-
+import Color from './ColorCircles'
+import '../App.css'
 let LatestMovies = () => {
     let [movies, setMovies] = useState([]);
     let [loading, setLoading] = useState(true);
@@ -14,7 +15,7 @@ let LatestMovies = () => {
                     `https://api.themoviedb.org/3/movie/now_playing?api_key=e8847ea985283735785e736b20c0ac34&language=en-US&page=1`
                 );
                 let data = await response.json();
-                setMovies(data.results.slice(0, 6)); 
+                setMovies(data.results.slice(0, 4)); 
             } catch {
             } finally {
                 setLoading(false);
@@ -35,7 +36,7 @@ let LatestMovies = () => {
     return (
         <>
             <div className='head-of'>
-                <h2 className='font'>Latest Movies</h2>
+                <span className='font'>Latest Movies</span>
                 <div className="movie-listq">
                     {movies.map((movie) => {
                         let posterUrl = movie.poster_path
@@ -43,17 +44,18 @@ let LatestMovies = () => {
                             : 'https://via.placeholder.com/200x300?text=No+Image';
 
                         return (
-                            <div key={movie.id} className="movie-cardq" onClick={() => handleMovieClick(movie)}>
+                            <div key={movie.id} className="movie-card" onClick={() => handleMovieClick(movie)}>
+                                                                   
+
                                 <img src={posterUrl} alt={movie.title} className="movie-posterq" />
-                                <div className="movie-title-boxq">
-                                    <h3>{movie.title}</h3>
-                                </div>
+                                <div className='head-text'>{movie.title}</div>
+                              
                             </div>
                         );
                     })}
                 </div>
             </div>
-            <hr />
+          <Color/>
         </>
     );
 };

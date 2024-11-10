@@ -60,7 +60,7 @@ let TheAllMovieSeriesPage = () => {
     <div className="space-capsule">
       <div className="cosmic-zone">
         <div className="quantum-search">
-          <h2>Search Movies & Serials</h2>
+          <span className='font'>Search Movies & Serials</span>
           <input
             type="text"
             placeholder="Search for a movie or serial..."
@@ -77,23 +77,23 @@ let TheAllMovieSeriesPage = () => {
         {error && <p className="celestial-note">{error}</p>}
 
         {!loading && !error && results.length === 0 && (
-          <p className="celestial-note"></p>
+          <p className="celestial-note">No results found.</p>
         )}
 
         {results.length > 0 && !loading && !error && (
           <>
-            <h2>Results</h2>
-            {results.map((item, index) => (
-              <div key={index} className="star-card" onClick={() => openDetailsPage(item)}>
-                <img
-                  src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
-                  alt={item.title || item.name}
-                />
-                <div className="galaxy-info">
-                  <h3>{item.title || item.name}</h3>
+            <span className='font'>Results</span>
+            <div className="movies-grid">  {}
+              {results.map((item, index) => (
+                <div key={index} className="star-card" onClick={() => openDetailsPage(item)}>
+                  <img
+                    src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+                    alt={item.title || item.name}
+                  />
+                  <div className='head-text' id="text-title">{item.title || item.name}</div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </>
         )}
       </div>

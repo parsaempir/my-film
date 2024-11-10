@@ -1,8 +1,8 @@
-
 import React, { useEffect, useState, useRef } from 'react';
-import './RomanceSeries.css';
-import { useNavigate } from 'react-router-dom'; 
-
+import { useNavigate } from 'react-router-dom';  
+import './RomanceSeries.css'
+import '../App.css';
+import Color from '../components/ColorCircles'
 let genreMap = {
   28: "Action",
   12: "Adventure",
@@ -28,23 +28,21 @@ let genreMap = {
 let RomanceSeries = () => {
   let [series, setSeries] = useState([]);
   let [loading, setLoading] = useState(true); 
+  let [error, setError] = useState(null); // برای مدیریت خطا
   let seriesWrapperRef = useRef(null);
   let navigate = useNavigate(); 
 
   let fetchRomanceSeries = async () => {
     let apiKey = 'e8847ea985283735785e736b20c0ac34'; 
     try {
-      console.log('Fetching romance series...');
       let response = await fetch(`https://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&with_genres=10749&language=en-US&page=1`);
-
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-
       let data = await response.json();
-      setSeries(data.results); 
+      setSeries(data.results || []); 
     } catch (error) {
-      console.error('Error fetching romance series:', error);
+      setError('Failed to load romance series.');
     } finally {
       setLoading(false); 
     }
@@ -54,46 +52,48 @@ let RomanceSeries = () => {
     fetchRomanceSeries();
   }, []);
 
+  let scrollLeft = () => {
+    if (seriesWrapperRef.current) {
+      seriesWrapperRef.current.scrollBy({ left: -300, behavior: 'smooth' });
+    }
+  };
+
+  let scrollRight = () => {
+    if (seriesWrapperRef.current) {
+      seriesWrapperRef.current.scrollBy({ left: 300, behavior: 'smooth' });
+    }
+  };
+
   let handleCardClick = (serie) => {
     navigate(`/series/${serie.id}`, { state: { serie } }); 
   };
 
-  let scroll = (direction) => {
-    if (seriesWrapperRef.current) {
-      let scrollAmount = 300; 
-      seriesWrapperRef.current.scrollBy({
-        left: direction === 'right' ? scrollAmount : -scrollAmount,
-        behavior: 'smooth'
-      });
-    }
-  };
-
   return (
     <>
-      <h2 className='fonts1'>Romance Series</h2>
-      <div className="container">
-        <div className="scroll-container">
-          <button className="scroll-button left" onClick={() => scroll('left')}>&lt;</button>
-          <div className="series-wrapper" ref={seriesWrapperRef}>
-            {loading && <p>Loading series...</p>}
-            {!loading && series.length > 0 && (
-              <ul className="series-list">
-                {series.map((serie) => (
-                  <li key={serie.id} onClick={() => handleCardClick(serie)}>
-                    <img 
-                      src={`https://image.tmdb.org/t/p/w200${serie.poster_path}`} 
-                      alt={serie.name} 
-                      onError={(e) => e.target.src = 'https://via.placeholder.com/200x300?text=No+Image'} 
-                    />
-                    <h2 className='textfx'>{serie.name}</h2>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-          <button className="scroll-button right" onClick={() => scroll('right')}>&gt;</button>
-        </div>
+      <span className='font'>Romance Series</span>
+      <div className="movie-list-container">
+        <button className="scroll-button left" onClick={scrollLeft}>&lt;</button>
+        <div className="movie-list" ref={seriesWrapperRef}>
+          {loading && <p>Loading series...</p>}
+          {error && <p>{error}</p>}
+          {!loading && !error && series.length > 0 && (
+            series.map((serie) => (
+              <div className="movie-card" key={serie.id} onClick={() => handleCardClick(serie)}>
+                <img 
+                  src={`https://image.tmdb.org/t/p/w200${serie.poster_path}`} 
+                  alt={serie.name} 
+                  onError={(e) => e.target.src = 'https://via.placeholder.com/200x300?text=No+Image'} 
+                />
+                <div className='head-text'>{serie.name}</div>
+              </div>
+            ))
+          )}
+        </div>  
+        <span className='button-scroll'>
+          <button className="scroll-button right" onClick={scrollRight}>&gt;</button>
+        </span>
       </div>
+      <Color/>
     </>
   );
 };

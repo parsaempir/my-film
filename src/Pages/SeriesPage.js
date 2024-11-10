@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { fetchTvShows } from '../api/Series';  
 import './MoviesPage.css';
 import Serch from '../assets/serch-mood.png';
-
+import '../App.css'
 let SeriesPage = () => {
   let [tvShows, setTvShows] = useState([]);
   let [searchTvTerm, setSearchTvTerm] = useState('');
@@ -63,7 +63,7 @@ let SeriesPage = () => {
     <div className="space-capsule">
       <div className="cosmic-zone">
         <div className="quantum-search">
-          <h2>Search Serials</h2>
+          <span className='font'>Search Serials</span>
           <input
             type="text"
             placeholder="Search for a Serials..."
@@ -76,7 +76,7 @@ let SeriesPage = () => {
           </button>
         </div>
 
-        <h2>Serials</h2>
+        <span className='font'>Serials</span>
         {loading && <p className="celestial-note">Loading Serials...</p>}  
         {error && <p className="celestial-note">{error}</p>}  
         {!loading && !error && tvShows.length === 0 && (
@@ -91,9 +91,9 @@ let SeriesPage = () => {
                   src={`https://image.tmdb.org/t/p/w500${show.poster_path}`}
                   alt={show.name}
                 />
-                <div className="galaxy-info">
-                  <h3>{show.name}</h3>
-                </div>
+             
+                  <div className='head-text'id='text-title' >{show.name}</div>
+             
               </div>
             ))}
           </div>

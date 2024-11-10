@@ -1,0 +1,28 @@
+.color-container {
+    display: flex;
+    gap: 16px; 
+    justify-content: center;
+    padding: 10px;
+}
+
+.color-circle {
+    width: 40px;
+    height:8px;
+    border-radius: 20px; 
+}
+
+.orange {
+    background-color: #FFA500;
+}
+
+.green {
+    background-color: #8BC34A;
+}
+
+.red {
+    background-color: #F44336;
+}
+
+.teal {
+    background-color: #26A69A;
+}
